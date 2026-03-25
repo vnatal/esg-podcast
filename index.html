@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spill the Greens — ESG Podcast</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      max-width: 520px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .header {
+      background: #ff5500;
+      color: #fff;
+      padding: 24px 28px;
+    }
+    .header h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+    .header p {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    .body {
+      padding: 24px 28px 28px;
+    }
+    .date {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .toggle {
+      display: flex;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid #ff5500;
+    }
+    .toggle button {
+      flex: 1;
+      padding: 8px 0;
+      font-size: 14px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .toggle button.active {
+      background: #ff5500;
+      color: #fff;
+    }
+    .toggle button:not(.active) {
+      background: #fff;
+      color: #ff5500;
+    }
+    audio {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .hidden { display: none; }
+    .footer {
+      text-align: center;
+      padding: 16px 28px;
+      border-top: 1px solid #eee;
+      font-size: 11px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <h1>Spill the Greens</h1>
+      <p>Daily ESG Stories — Audio Briefing</p>
+    </div>
+    <div class="body">
+      <p class="date" id="date-display"></p>
+
+      <div class="toggle">
+        <button id="btn-en" class="active" onclick="switchLang('en')">English</button>
+        <button id="btn-pt" onclick="switchLang('pt')">Português</button>
+      </div>
+
+      <div id="player-en">
+        <audio id="audio-en" controls preload="metadata">
+          <source id="src-en" src="" type="audio/mpeg">
+          Your browser does not support audio.
+        </audio>
+      </div>
+      <div id="player-pt" class="hidden">
+        <audio id="audio-pt" controls preload="metadata">
+          <source id="src-pt" src="" type="audio/mpeg">
+          Your browser does not support audio.
+        </audio>
+      </div>
+    </div>
+    <div class="footer">
+      Itaú BBA — Equity Research ESG
+    </div>
+  </div>
+
+  <script>
+    // Read date from URL param or use today
+    var params = new URLSearchParams(window.location.search);
+    var dateStr = params.get('date') || new Date().toISOString().slice(0, 10);
+
+    document.getElementById('date-display').textContent = dateStr;
+
+    // Set audio sources based on date
+    var base = './' + dateStr + '/';
+    document.getElementById('src-en').src = base + 'en.mp3';
+    document.getElementById('src-pt').src = base + 'pt.mp3';
+    document.getElementById('audio-en').load();
+    document.getElementById('audio-pt').load();
+
+    function switchLang(lang) {
+      var enPlayer = document.getElementById('player-en');
+      var ptPlayer = document.getElementById('player-pt');
+      var btnEn = document.getElementById('btn-en');
+      var btnPt = document.getElementById('btn-pt');
+      var audioEn = document.getElementById('audio-en');
+      var audioPt = document.getElementById('audio-pt');
+
+      if (lang === 'pt') {
+        audioEn.pause();
+        enPlayer.classList.add('hidden');
+        ptPlayer.classList.remove('hidden');
+        btnEn.classList.remove('active');
+        btnPt.classList.add('active');
+      } else {
+        audioPt.pause();
+        ptPlayer.classList.add('hidden');
+        enPlayer.classList.remove('hidden');
+        btnPt.classList.remove('active');
+        btnEn.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>
